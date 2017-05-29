@@ -9,55 +9,47 @@
     Original written by John Shepherd
 */
 
-// functions on ints
-
 #include <stdio.h>
 #include <stdlib.h>
-#include <assert.h>
 
 #include "mergesortmod.h"
 
-
 void mergeSort(void * array[], int lo, int hi, int size)
 {
-    //Base case
-    if(hi <= lo) return;
-
-    //Find the midpoint
     int mid = (lo + hi) / 2;
 
-    //Left merge
-    mergeSort(array, lo, mid, size, first);
-    //Right merge
-    mergeSort(array, mid + 1, hi, size, first);
-    //Merge
+    if(hi <= lo) return;
+
+    mergeSort(array, lo, mid, size);
+    mergeSort(array, mid + 1, hi, size);
+
+    //Merge the two lists together
+    merge(array, lo, mid, hi, size);
 }
 
 void merge(void * array[], int lo, int mid, int hi, int size)
 {
-    int i, j, k, nitems = hi - lo + 1;
+    int i, j, k = 0;
+    int nitems = hi - lo + 1;
+
+    //Create temporary array
     void ** tmp = malloc(nitems * size);
 
-    i = lo;
-    j = mid + 1;
-    k = 0;
+    i = lo, j = mid + 1; nitems = hi - lo + 1;
 
-    //scan both segments, copying to tmp
+    //scan both segements, copying to tmp
     while(i <= mid && j <= hi) {
-
         if(array[i] <= array[j])
             tmp[k++] = array[i++];
         else
             tmp[k++] = array[j++];
-
     }
+    //copy items from unfinished segment
+    while(i <= mid) tmp[k++] = array[i++];
+    while(j <= hi) tmp[k++] = array[j++];
 
-        //copy items from the unfinished segment
-        while(i <= mid) tmp[k++] = array[i++];
-        while(j <= hi) tmp[k++] = array[j++];
-
-        //copy tmp back to main array
-        for(i = lo, k = 0; i <= hi; i++, k++)
-            array[i] = tmp[k];
-        free(tmp);
+    //cpoy tmp back to main array
+    for(i = lo, k = 0; i <= hi; i++, k++)
+        array[i] = tmp[k];
+    free(tmp);
 }
