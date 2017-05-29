@@ -24,6 +24,7 @@
 #include "graph.h"
 #include "queue.h"
 #include "readData.h"
+#include "mergesortmod.h"
 
 /*
     #include other supporting files*
@@ -79,6 +80,7 @@ int main(int argc, char * argv[])
 */
     Queue q = newQueue();
     getCollection(q);
+    
     Graph g = newGraph(10);
     getGraph(g, q);
 
@@ -161,20 +163,60 @@ void calculatePageRank(Graph g, float d, float diffPR, int maxIterations)
             diff += fabs(PR[i] - oldPR);
         }
     }
-    //Print to a file (WRITE FUNCTION FOR THIS)
+
+    //Print to a file 
+    printPR(g, PR);
 }
 
 //Prints all the pageRanks from function to an output file
-void printPRtoFile(Graph g, float * PR)
+void printPR(Graph g, float * PR)
 {
+    int i = 0;
+    int N = nVertices(g);
+    // make an array for the pageranks
+    pageRankNode array[N];
 
+    // make the nodes for each pageRank
+    for(i = 0; i < N; i++) {
+        pageRankNode new = malloc(sizeof(pageRankNode));
+        new->rankValue = PR[i];
+        new->outLinks = nEdges(g, i);
+        new->urlName = strdup(vertexName(g, i)); 
+        array[i] = new;
+    }
+    
+    // sort the nodes by pagerank value
+    mergeSort((void*)array, 0, N, sizeof(pageRankNode), compareOutgoingEdge); // FIX due to changes in mergeSort.c/.h
 
+    mergeSort((void*)array, 0, N, sizeof(pageRankNode), comparePageRank); // FIX due to changes in mergeSort.c/.h
 
-    //Make an array for the pageranks
-        //Make the nodes for each pageRank -> initalise to struct
+    FILE *fp; 
 
-    //Sort the nodes by pagerank value
+    // checks if not null 
+    if((fp = fopen("pagerankList.txt", "w")) != NULL) {
+        for (i = 0; i < N; i++) {
+            // print values
+            printf("%s, %d, ,%.8f\n", array[i]->urlName, array[i]->outLinks, array[i]->rankValue);
+            // print to file
+            fprintf(fp, "%s, %d, ,%.8f\n", array[i]->urlName, array[i]->outLinks, array[i]->rankValue);
+            // free node 
+            free(array[i]);
+        }
 
-    //Do the file pointer stuff :P
-        //Check not null -> print values, print to file -> free things -> close file
+        // close file
+        fclose(fp);
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
