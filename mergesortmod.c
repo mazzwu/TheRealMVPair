@@ -18,7 +18,7 @@
 #include "mergesortmod.h"
 
 
-void mergeSort(void * array[], int lo, int hi, int size, int (*first) (const void *, const void *))
+void mergeSort(void * array[], int lo, int hi, int size)
 {
     //Base case
     if(hi <= lo) return;
@@ -33,7 +33,7 @@ void mergeSort(void * array[], int lo, int hi, int size, int (*first) (const voi
     //Merge
 }
 
-void merge(void * array[], int lo, int mid, int hi, int size, int (*first) (const void *, const void *))
+void merge(void * array[], int lo, int mid, int hi, int size)
 {
     int i, j, k, nitems = hi - lo + 1;
     void ** tmp = malloc(nitems * size);
@@ -45,7 +45,7 @@ void merge(void * array[], int lo, int mid, int hi, int size, int (*first) (cons
     //scan both segments, copying to tmp
     while(i <= mid && j <= hi) {
 
-        if(first(array[i], array[j]))
+        if(array[i] <= array[j])
             tmp[k++] = array[i++];
         else
             tmp[k++] = array[j++];
