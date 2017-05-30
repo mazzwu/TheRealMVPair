@@ -14,20 +14,21 @@
 
 #include "mergesortmod.h"
 
-void mergeSort(void * array[], int lo, int hi, int size)
+
+void mergeSort(void * array[], int lo, int hi, int size, int(*first)(const void*,const void*))
 {
     int mid = (lo + hi) / 2;
 
     if(hi <= lo) return;
 
-    mergeSort(array, lo, mid, size);
-    mergeSort(array, mid + 1, hi, size);
+    mergeSort(array, lo, mid, size, first);
+    mergeSort(array, mid + 1, hi, size, first);
 
-    //Merge the two lists together
-    merge(array, lo, mid, hi, size);
+    merge(array, lo, mid, hi, size, first);
+    //printf("HELLO\n");
 }
 
-void merge(void * array[], int lo, int mid, int hi, int size)
+void merge(void * array[], int lo, int mid, int hi, int size, int(*first)(const void*,const void*))
 {
     int i, j, k = 0;
     int nitems = hi - lo + 1;
@@ -39,7 +40,7 @@ void merge(void * array[], int lo, int mid, int hi, int size)
 
     //scan both segements, copying to tmp
     while(i <= mid && j <= hi) {
-        if(array[i] <= array[j])
+        if(first(array[i],array[j]))
             tmp[k++] = array[i++];
         else
             tmp[k++] = array[j++];

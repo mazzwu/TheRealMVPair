@@ -24,6 +24,7 @@
 #include "graph.h"
 #include "queue.h"
 #include "readData.h"
+#include "mergesortmod.h"
 
 /*
     #include other supporting files*
@@ -79,6 +80,7 @@ int main(int argc, char * argv[])
 */
     Queue q = newQueue();
     getCollection(q);
+
     Graph g = newGraph(10);
     getGraph(g, q);
 
@@ -109,10 +111,10 @@ void calculatePageRank(Graph g, float d, float diffPR, int maxIterations)
     int i, j, iteration = 0;
 
     //Old pageRank
-    int oldPR = 0;
+    double oldPR = 0;
 
     //Number of urls in the collection
-    int N = nVertices(g);
+    double N = nVertices(g); // N is 10
 
     float sum = 0;
     float diff = diffPR; //to enter the while loop
@@ -121,15 +123,17 @@ void calculatePageRank(Graph g, float d, float diffPR, int maxIterations)
     float PR[nVertices(g)];
 
     //For each url in the collection - assign default rank
-    for(i = 0; i < N; i++) PR[i] = 1 / N;
-
+    for(i = 0; i < N; i++){ 
+        PR[i] = 1 / N;
+    }
     //iteration = 0; - for reference only
     //diff = diffPR - for reference only, enters this loop
 
-    while(iteration < maxIterations && diff >= diffPR) {
+
+    while(iteration < maxIterations && diff <= diffPR) {
         //increment interation - grab next url
-        iteration++;
         //Reset diff to zero
+       // printf("increment %d\n", iteration);
         diff = 0;
 
         //Do the maths
@@ -137,21 +141,25 @@ void calculatePageRank(Graph g, float d, float diffPR, int maxIterations)
         //2. If pages are connected -> add pagerank to the overall sum
         //3. Do the final pagerank algorithm
 
-        i = 0;
         //Go through every url
         for(i = 0; i < N; i++) {
             //Save the old pagerank/ - needed for final algorithm
             oldPR = PR[i];
             //Reset the sum value for new calculation
+            printf("i = %d\n", i);
             sum = 0;
 
             //Go through every page
             for(j = 0; j < N; j++) {
                 //Find ones that are connected and add to the pageRank sum
                 //Use isConnected from graph.c
-                if(isConnected(g, vertexName(g, j), vertexName (g, i)))
+                    //printf("hell\n");
+                if(isConnected(g, vertexName(g, j), vertexName (g, i))){
                 //Add the edges to the running sum
-                    sum += PR[j] / nEdges(g, i);
+                    //printf("i is %d\n", nEdges(g,i));
+                    sum +=  PR[j] / (double) nEdges(g, i);
+                }
+                    //printf("j = %d\n", j);
             }
 
             //Do the final pageRank algorithm
@@ -160,21 +168,65 @@ void calculatePageRank(Graph g, float d, float diffPR, int maxIterations)
             //fabs - absolute value
             diff += fabs(PR[i] - oldPR);
         }
+        iteration++;
     }
-    //Print to a file (WRITE FUNCTION FOR THIS)
+    //Print to a file 
+    printPR(g, PR);
 }
 
 //Prints all the pageRanks from function to an output file
-void printPRtoFile(Graph g, float * PR)
+void printPR(Graph g, float * PR)
 {
+    int i = 0;
+    int N = nVertices(g);
+    // make an array for the pageranks
+    pageRankNode array[N];
 
+    // make the nodes for each pageRank
+    for(i = 0; i < N; i++) {
+        pageRankNode new = malloc(sizeof(pageRankNode));
+        new->rankValue = PR[i];
+        new->outLinks = nEdges(g, i);
+        new->urlName = strdup(vertexName(g, i)); 
+        array[i] = new;
+    }
+    
+    // sort the nodes by pagerank value
+    //mergeSort((void*)array, 0, N, sizeof(pageRankNode), compareOutgoingEdge);
+   // mergeSort((void*)array, 0, N, sizeof(pageRankNode), comparePageRank); 
 
+    FILE *fp; 
 
-    //Make an array for the pageranks
-        //Make the nodes for each pageRank -> initalise to struct
+    // checks if not null 
+    if((fp = fopen("pagerankList.txt", "w")) != NULL) {
+        
+        for (i = 0; i < N; i++) {
+            fprintf(fp, "cola\n");
+            // print values
+            printf("%s, %d, ,%.8f\n", array[i]->urlName, array[i]->outLinks, array[i]->rankValue);
+            // print to file
+            fprintf(fp, "%s, %d, ,%.8f\n", array[i]->urlName, array[i]->outLinks, array[i]->rankValue);
+            // free node 
+            free(array[i]);
+            fprintf(fp, "hola\n");
+        }
 
-    //Sort the nodes by pagerank value
+        
 
-    //Do the file pointer stuff :P
-        //Check not null -> print values, print to file -> free things -> close file
+        // close file
+        fclose(fp);
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

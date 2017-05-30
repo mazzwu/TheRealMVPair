@@ -30,6 +30,12 @@ void  showGraph(Graph,int);
 static int vertexID(char *, char **, int);
 int addVertex(char *, char **, int);
 
+//================= ADDED FUNCTIONS====================//
+
+int nEdges(Graph, int);
+char * vertexName(Graph, int);
+
+
 // newGraph()
 // - create an initially empty Graph
 Graph newGraph(int maxV)
@@ -162,4 +168,41 @@ int addVertex(char *str, char **names, int N)
 {
 	names[N] = strdup(str);
 	return N;
+}
+
+int nEdges(Graph g, int i)
+{
+	int edgeCount = 0;
+	int vertex = 0;
+
+	//Cannot find the vertex
+	if(i > nVertices(g) - 1) return 0;
+
+
+	while(vertex < nVertices(g)) {
+
+		//Ignore backlinks to itself
+		/*if(i == vertex){
+		 	continue;
+		}
+*/
+		if(g->edges[i][vertex] != 0){
+		 edgeCount++;
+		}
+
+		vertex++;
+	}
+	//printf("EDGE COUNT IS %d\n", edgeCount);
+	//printf("hello\n");
+	return edgeCount;
+}
+
+//Prints the name of vertex - the url corresponding to number
+char * vertexName(Graph g, int i)
+{
+	//Cannot find the vertex
+	if(i > nVertices(g) - 1) return 0;
+	//Return the name in the vertex
+	else
+		return g->vertex[i];
 }
