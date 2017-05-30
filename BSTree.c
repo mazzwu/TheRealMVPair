@@ -5,7 +5,7 @@
 #include <assert.h>
 #include <string.h>
 #include "BSTree.h"
-#include "Queue.h"
+#include "queue.h"
 
 typedef struct BSTNode *BSTLink;
 
@@ -95,28 +95,6 @@ void BSTreePostfix(BSTree t)
 END
 */
 
-void BSTreeLevelOrder(BSTree t)
-{
-	//Initialise queue
-	Queue newQ = newQueue();
-
-	//add T's root node to the queue
-	if (t != NULL) QueueJoin(newQ, t);
-
-	//While the queue still has entries
-	while(!QueueIsEmpty(newQ)) {
-
-		t = QueueLeave(newQ);
-
-		printf("%d ", t->value);
-		//Take the head of the queue, print value from its BSTree node
-		//showBSTreeNode(t);
-		//Add left child (if any) to the queue
-		if(t->left != NULL) QueueJoin(newQ, t->left);
-		//Add right child (if any) to the queue
-		if(t->right != NULL) QueueJoin(newQ, t->right);
-	}
-}
 
 // count #nodes in BSTree
 int BSTreeNumNodes(BSTree t)

@@ -15,4 +15,9 @@ int   nVertices(Graph);
 int   isConnected(Graph, char *, char *);
 void  showGraph(Graph,int);
 
+//================= ADDED FUNCTIONS====================//
+
+int nEdges(Graph, int);
+char * vertexName(Graph, int);
+
 #endif
