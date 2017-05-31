@@ -35,8 +35,7 @@ void getCollection(Queue q) {
     fclose(fp);
 }
 
-void getGraph(Graph g, Queue q)
-{
+void getGraph(Graph g, Queue q) {
 	char * fileName;
 	char buffer[size];
 	//char temp[size];
@@ -56,7 +55,6 @@ void getGraph(Graph g, Queue q)
 
 		//Look for "Section 1" and "end"
 		//Not at the end of the file yet
-
 		while((fscanf(fp, "%s", buffer) != EOF) && strcmp(buffer, "#end") != 0) {
 			//Look for "start" and "section1"
 			if((strcmp(buffer, "#start") != 0) && (strcmp(buffer, "Section-1") != 0)) {
@@ -69,6 +67,37 @@ void getGraph(Graph g, Queue q)
 		fclose(fp);
 		free(fileName);
 	}
+}
+
+BSTNode getInvertedList(BSTNode treeNode, Queue q) {
+	char * fileName;
+	char buffer[size];
+
+	while(!emptyQueue(q)) {
+
+		//Increment -> move to next file
+		//leaveQueue -> returns string at the front of the queue
+		fileName = leaveQueue(q);
+
+		//Add the .txt suffix to the current file
+		strcat(fileName, ".txt");
+
+		FILE * fp;
+		if((fp = fopen(fileName, "r")) == NULL)  return NULL;
+
+		//Look for "Section 2" and "end"
+		//Not at the end of the file yet
+		while((fscanf(fp, "%s", buffer) != EOF) && strcmp(buffer, "#end") != 0) {
+			//Look for "start" and "section2"
+			if((strcmp(buffer, "#start") != 0) && (strcmp(buffer, "Section-2") != 0)) {
+				// FILL WITH STUFF 
+
+			}
+		}
+		fclose(fp);
+		free(fileName);
+	}
+	return treeNode;
 }
 
 
