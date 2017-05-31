@@ -3,29 +3,36 @@
 #ifndef BSTREE_H
 #define BSTREE_H
 
-#include <stdio.h>
-#include <stdlib.h>
+typedef struct BSTNode *BSTree;
 
-#include "linkedlist.h"
+// create an empty BSTree
+BSTree newBSTree();
+// free memory associated with BSTree
+void dropBSTree(BSTree);
+// display a BSTree
+void showBSTree(BSTree);
+// display BSTree root node
+void showBSTreeNode(BSTree);
 
-typedef struct BSTree * BSTNode;
+// print values in infix order
+void BSTreeInfix(BSTree);
+// print values in prefix order
+void BSTreePrefix(BSTree);
+// print values in postfix order
+void BSTreePostfix(BSTree);
+// print values in level-order
+void BSTreeLevelOrder(BSTree);
 
-struct BSTree
-{
-	char * word;
-    Node node;
-	BSTNode left;
-    BSTNode right;
-};
+// count #nodes in BSTree
+int BSTreeNumNodes(BSTree);
+// count #leaves in BSTree
+int BSTreeNumLeaves(BSTree);
 
-// make a new node containing a value
-BSTNode newBSTNode(char *, char *);
-
-void BSTreeInfix(BSTNode);
-
-BSTNode insertBSTree(BSTNode, char *, Node);
-void printListNode(Node node, FILE * output);
-void printTreeNode(BSTNode treeNode, FILE * output);
-void disposeTree(BSTNode);
+// insert a new value into a BSTree
+BSTree BSTreeInsert(BSTree, int);
+// check whether a value is in a BSTree
+int BSTreeFind(BSTree, int);
+// delete a value from a BSTree
+BSTree BSTreeDelete(BSTree, int);
 
 #endif

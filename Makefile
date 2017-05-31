@@ -27,7 +27,6 @@ graph.o: graph.c graph.h
 queue.o: queue.c queue.h
 BSTree.o: BSTree.c BSTree.h
 set.o: set.c set.h
-mergesortmod.o: mergesortmod.c mergesortmod.h
 readData.o: readData.c readData.h 
 selectionSort.o: selectionSort.c selectionSort.h
 linkedlist.o: linkedlist.c linkedlist.h

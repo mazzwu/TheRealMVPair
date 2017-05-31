@@ -24,10 +24,18 @@
 #include "graph.h"
 #include "queue.h"
 #include "readData.h"
-#include "mergesortmod.h"
+#include "selectionSort.h"
 
+/*
+    #include other supporting files*
+    maybe a sorting one? --> needs to print everything in order
+*/
+
+//Need a pageRank node structure
 typedef struct pageRankNode
 {
+    //Figure out what to put in the struct
+
     float rankValue;            //PageRank value
     char * urlName;             //Name of url
     int outLinks;               //Number of out links
@@ -43,7 +51,6 @@ void printPR(Graph g, float *PR);
 
 //===============================================================//
 
-/*
 int comparePageRank(const void * a, const void * b)
 {
     return ((((pageRankNode)b)->rankValue - ((pageRankNode)a)->rankValue) > 0.0000001) ? 0 : 1;
@@ -53,7 +60,6 @@ int compareOutgoingEdge(const void * a, const void * b)
 {
     return ((((pageRankNode)b)->outLinks - ((pageRankNode)a)->outLinks) > 0.0000001) ? 0 : 1;
 }
-*/
 
 int main(int argc, char * argv[])
 {
@@ -80,8 +86,12 @@ int main(int argc, char * argv[])
 
     calculatePageRank(g, d, diffPR, maxIterations);
 
-    disposeGraph(g);
-    disposeQueue(q);
+/*  Program should output a list of urls in descending order of PageRank values (8sf)
+    Print to file named pagerankList.txt
+    List includes out links (number of outgoing links) for each url along with PageRank value
+
+    SAVE TO MEMORY SOMEHOW
+*/
 
     return EXIT_SUCCESS;
 }
@@ -113,15 +123,15 @@ void calculatePageRank(Graph g, float d, float diffPR, int maxIterations)
     float PR[nVertices(g)];
 
     //For each url in the collection - assign default rank
-    for(i = 0; i < N; i++){
+    for(i = 0; i < N; i++){ 
         PR[i] = 1 / N;
     }
     //iteration = 0; - for reference only
     //diff = diffPR - for reference only, enters this loop
 
 
-    while(iteration < maxIterations && diff <= diffPR) {
-
+    while(iteration < maxIterations && diff >= diffPR) {
+        //increment interation - grab next url
         //Reset diff to zero
        // printf("increment %d\n", iteration);
         diff = 0;
@@ -136,7 +146,6 @@ void calculatePageRank(Graph g, float d, float diffPR, int maxIterations)
             //Save the old pagerank/ - needed for final algorithm
             oldPR = PR[i];
             //Reset the sum value for new calculation
-            //printf("i = %d\n", i);
             sum = 0;
 
             //Go through every page
@@ -147,20 +156,20 @@ void calculatePageRank(Graph g, float d, float diffPR, int maxIterations)
                 if(isConnected(g, vertexName(g, j), vertexName (g, i))){
                 //Add the edges to the running sum
                     //printf("i is %d\n", nEdges(g,i));
-                    sum +=  PR[j] / (double) nEdges(g, i);
+                    sum +=  PR[j] / (double) nEdges(g, j);
                 }
                     //printf("j = %d\n", j);
             }
 
             //Do the final pageRank algorithm
-            PR[i] = (1 - d) / N + (d * sum);
+            PR[i] = ((1 - d) / N) + (d * sum);
 
             //fabs - absolute value
             diff += fabs(PR[i] - oldPR);
         }
         iteration++;
     }
-    //Print to a file
+    //Print to a file 
     printPR(g, PR);
 }
 
@@ -177,30 +186,43 @@ void printPR(Graph g, float * PR)
         pageRankNode new = malloc(sizeof(pageRankNode));
         new->rankValue = PR[i];
         new->outLinks = nEdges(g, i);
-        new->urlName = strdup(vertexName(g, i));
+        new->urlName = strdup(vertexName(g, i)); 
         array[i] = new;
+        printf("%d, %s\n", i, array[i]->urlName);
     }
 
-    // sort the nodes by pagerank value
-    //mergeSort((void*)array, 0, N, sizeof(pageRankNode), compareOutgoingEdge);
-   // mergeSort((void*)array, 0, N, sizeof(pageRankNode), comparePageRank);
+    selectionSort((void*)array, N, compareOutgoingEdge);
+    selectionSort((void*)array, N, comparePageRank);
 
-    FILE *fp;
+    FILE *fp; 
 
-    // checks if not null
+    // checks if not null 
     if((fp = fopen("pagerankList.txt", "w")) != NULL) {
-
+        
         for (i = 0; i < N; i++) {
-            //fprintf(fp, "cola\n");
             // print values
+            printf("%d\n", i);
             printf("%s, %d, ,%.8f\n", array[i]->urlName, array[i]->outLinks, array[i]->rankValue);
             // print to file
             fprintf(fp, "%s, %d, ,%.8f\n", array[i]->urlName, array[i]->outLinks, array[i]->rankValue);
-            // free node
+            // free node 
             free(array[i]);
-            //fprintf(fp, "hola\n");
         }
+
         // close file
         fclose(fp);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
