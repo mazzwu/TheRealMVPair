@@ -23,13 +23,26 @@
  #include "BSTree.h"
  #include "graph.h"
  #include "queue.h"
-
- /*
- FUNCTIONS
- print to a file?
- */
+ #include "readData.h"
 
  int main(int argc, char * argv[])
  {
+     Queue q = newQueue();
+     getCollection(q);
 
+     BSTNode tree = getBSTree(/*something here*/); //from readData
+
+
+
+     disposeQueue(q);
+     disposeTree(tree);
+
+     return EXIT_SUCCESS;
+ }
+
+ void printInv(BSTNode treeNode)
+ {
+     BSTtoFile();
+
+     
  }
