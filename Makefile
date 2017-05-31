@@ -2,10 +2,10 @@
 
 CC = gcc
 CFLAGS = -Wall -Werror -g
-LIBS = graph.o queue.o set.o mergesortmod.o readData.o BSTree.o 
+LIBS = graph.o queue.o set.o readData.o BSTree.o selectionSort.o linkedlist.o
 
 
-all: graph.o queue.o set.o mergesortmod.o BSTree.o readData.o pagerank inverted 
+all: graph.o queue.o set.o linkedlist.o selectionSort.o BSTree.o readData.o pagerank inverted 
 
 pagerank: pagerank.o 
 	$(CC) $(CFLAGS) -o pagerank pagerank.o $(LIBS)
@@ -29,6 +29,8 @@ BSTree.o: BSTree.c BSTree.h
 set.o: set.c set.h
 mergesortmod.o: mergesortmod.c mergesortmod.h
 readData.o: readData.c readData.h 
+selectionSort.o: selectionSort.c selectionSort.h
+linkedlist.o: linkedlist.c linkedlist.h
 
 clean: 
 	rm -f *.o pagerank inverted scaled search core
