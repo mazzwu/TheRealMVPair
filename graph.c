@@ -181,15 +181,10 @@ int nEdges(Graph g, int i)
 
 	while(vertex < nVertices(g)) {
 
-		//Ignore backlinks to itself
-		/*if(i == vertex){
-		 	continue;
-		}
-*/
 		if(g->edges[i][vertex] != 0){
 		 edgeCount++;
 		}
-
+	// printf("1 EDGE COUNT IS %d\n", edgeCount);
 		vertex++;
 	}
 	//printf("EDGE COUNT IS %d\n", edgeCount);

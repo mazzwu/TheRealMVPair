@@ -1,27 +1,16 @@
 /*
+	selectionSort.c
 
+	COMP1927 ASSIGNMENT 2 - SIMPLE SEARCH ENGINES
 
+	By Marina W. & Vanessa M. 
 
+	Modified selection sort algorithm taken from tutorials 
+	Original written by John Shepherd
 */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-/*int main(void) {
-
-	array[5] = {fish1, fish2, hello, merp, hah};
-
-	selectionSort(array, 5, compareOutgoingEdge);
-	selectionSort(array, 5, comparePageRank);
-
-	for(int i = 0; i < 5, i++){
-		printf("%s, ", array[i]);
-	}
-
-	printf("\n");
-
-	return EXIT_SUCCESS;
-} */
 
 void selectionSort(void*array[], int N, int(*first)(const void*,const void*)) {
 	int i, minValInd;
