@@ -21,11 +21,15 @@ struct BSTree
 // make a new node containing a value
 BSTNode newBSTNode(char *, char *);
 
-void BSTreeInfix(BSTNode);
+void BSTreeInfixPrint(BSTNode, FILE *);
 
-BSTNode insertBSTree(BSTNode, char *, Node);
+BSTNode insertBSTree(BSTNode, char *, char *);
 void printListNode(Node node, FILE * output);
 void printTreeNode(BSTNode treeNode, FILE * output);
 void disposeTree(BSTNode);
+
+//void addList(BSTNode, Node, char *);
+
+void addLinkToList(BSTNode t, Node node, char *p);
 
 #endif
