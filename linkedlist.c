@@ -10,7 +10,7 @@ Node newNode(char * urlName)
 {
     Node new = malloc(sizeof(Node));
 
-    if(new == NULL) exit(1);
+    if(new == NULL) printf("NO NEW NODE SADNESS\n");
 
     new->name = strdup(urlName);
     new->next = NULL;

@@ -4,7 +4,15 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 
-typedef struct QueueRep *Queue;
+#include "linkedlist.h"
+
+typedef struct QueueRep * Queue;
+
+typedef struct QueueRep {
+	Node  front;
+	Node  back;
+	int qSize;
+} QueueRep;
 
 // Function signatures
 
