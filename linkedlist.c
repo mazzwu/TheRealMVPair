@@ -20,8 +20,6 @@ Node newNode(char * urlName)
 
 //Add node to the front of the list
 
-//FIX THIS
-
 Node addNode(Node first, char * urlName)
 {
     Node addNode = newNode(urlName);
@@ -40,16 +38,6 @@ Node addNode(Node first, char * urlName)
     }
 
     return addNode;
-}
-
-Node nextNode(Node first)
-{
-    return first->next;
-}
-
-char * NodeName(Node first)
-{
-    return first->name;
 }
 
 void disposeList(Node first)

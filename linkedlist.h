@@ -11,8 +11,6 @@ struct node
 
 Node newNode(char *);
 Node addNode(Node, char *);
-Node nextNode(Node);
-char * NodeName(Node);
 void disposeList(Node);
 
 #endif

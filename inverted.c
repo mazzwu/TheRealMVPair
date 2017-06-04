@@ -25,29 +25,19 @@ void printInv(BSTNode treeNode);
 int main(int argc, char * argv[])
 {
     Queue q = newQueue();
-
     getCollection(q);
-    printf("HELLO\n");
 
     //Start a new tree
     BSTNode tree = NULL;
 
-    printf("ARE YOU HERE\n");
     tree = getTree(tree, q);
 
-    printf("IS IT ME\n");
+    printf("\n");
 
     printInv(tree);
 
-    printf("OMG\n");
-
     disposeQueue(q);
-
-    printf("IS IT HERE\n");
-
     disposeTree(tree);
-
-    printf("FOR FUCKS SAKE\n");
 
     return EXIT_SUCCESS;
 }
